@@ -2,8 +2,8 @@
 
 ## hello
 
-disana
-diatas
-disitu
-didalam
-disini
+di sana
+di atas
+di situ
+di dalam
+di sini
