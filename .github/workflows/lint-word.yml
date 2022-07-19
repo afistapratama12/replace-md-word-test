@@ -19,10 +19,15 @@ jobs:
       - name: running lint wording
         run : go run ./tools/replace-to-EYD/main.go 
       - name: Commit and Push
-        continue-on-error: true
-        run: |
-          git add .
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git commit -am "chore: lint wording"
-          git push
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.TOKEN_GITHUB }}
+          message : 'chore: lint wording'
+          branch: ${{ github.ref_name }}
+        # continue-on-error: true
+        # run: |
+        #   git add .
+        #   git config user.name github-actions
+        #   git config user.email github-actions@github.com
+        #   git commit -am "chore: lint wording"
+        #   git push
