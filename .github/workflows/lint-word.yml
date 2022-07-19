@@ -23,6 +23,7 @@ jobs:
         with:
           github_token: ${{ secrets.TOKEN_GITHUB }}
           message : 'chore: lint wording'
+          branch: ${GITHUB_REF##*/}
         # continue-on-error: true
         # run: |
         #   git add .
