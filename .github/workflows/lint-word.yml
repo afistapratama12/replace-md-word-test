@@ -14,10 +14,8 @@ jobs:
         with:
           go-version: '1.17'
           check-latest: true
-          cache: true
       - run : go run ./tools/replace-to-EYD/main.go 
       - name: Commit and Push
-        working-directory: ./km-slide
         continue-on-error: true
         run: |
           git add .
