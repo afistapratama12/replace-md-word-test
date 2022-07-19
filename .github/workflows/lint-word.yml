@@ -6,22 +6,33 @@ on:
       - "**.md"
 jobs:
   lint-word-writer:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    name: lint-word
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - name: debug head ref
+        run: 
+          echo "$GH_BRANCH"
+        env:
+          GH_BRANCH: ${{ github.head_ref || github.ref_name }} 
+      - name: Checkout Repository
+        uses: actions/checkout@v3
         with:
-          go-version: '1.17'
-          check-latest: true
-          cache: true
-      - run : go run ./tools/replace-to-EYD/main.go 
+          fetch-depth: 2
+      - name: Setup golang 
+        uses: actions/setup-go@v3
+      - name: running lint wording
+        run : go run ./tools/replace-to-EYD/main.go 
       - name: Commit and Push
-        working-directory: ./km-slide
-        continue-on-error: true
-        run: |
-          git add .
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git commit -am "chore: lint wording"
-          git push
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.TOKEN_GITHUB }}
+          message : 'chore: lint wording'
+          branch: ${{ github.head_ref || github.ref_name }} 
+        # continue-on-error: true
+        # run: |
+        #   git add .
+        #   git config user.name github-actions
+        #   git config user.email github-actions@github.com
+        #   git commit -am "chore: lint wording"
+        #   git push
