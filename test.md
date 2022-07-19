@@ -2,8 +2,8 @@
 
 ## hello
 
-disini
 disana
+diatas
+disini
 disitu
 didalam
-diatas
