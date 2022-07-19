@@ -10,6 +10,10 @@ jobs:
     name: lint-word
     runs-on: ubuntu-latest
     steps:
+      - name: debug head ref
+        run: | 
+        echo ${{ github.head_ref }}
+        echo ${{ github.ref_name }}
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
@@ -23,7 +27,7 @@ jobs:
         with:
           github_token: ${{ secrets.TOKEN_GITHUB }}
           message : 'chore: lint wording'
-          branch: ${GITHUB_REF##*/}
+          branch: ${{ github.head_ref || github.ref_name }} 
         # continue-on-error: true
         # run: |
         #   git add .
