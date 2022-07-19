@@ -12,8 +12,8 @@ jobs:
     steps:
       - name: debug head ref
         run: | 
-        echo ${{ github.head_ref }}
-        echo ${{ github.ref_name }}
+        echo "${{ github.head_ref }}"
+        echo "${{ github.ref_name }}"
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
