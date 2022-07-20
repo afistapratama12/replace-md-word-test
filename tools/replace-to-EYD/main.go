@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -27,7 +28,7 @@ func main() {
 	listFileName := string(out)
 
 	for _, fileName := range strings.Split(listFileName, "\n") {
-		if fileName != "" && fileName[len(fileName)-3:] == ".md" {
+		if fileName != "" && filepath.Ext(fileName) == ".md" {
 			MDText := OpenFile(fileName)
 			newMDText := ReplaceToEYD(MDText)
 			OverwriteText(newMDText, fileName)
