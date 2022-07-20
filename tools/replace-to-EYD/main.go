@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -9,10 +8,14 @@ import (
 	"strings"
 )
 
-var (
-	start   = []string{"disini", "disana", "disitu", "didalam", "diatas", "dibawah"}
-	replace = []string{"di sini", "di sana", "di situ", "di dalam", "di atas", "di bawah"}
-)
+type ReplacerWord struct {
+	Start    string
+	Replacer string
+}
+
+var listReplacerWord = []ReplacerWord{{"disini", "di sini"}, {"disana", "di sana"}, {"disitu", "di situ"}, {"didalam", "di dalam"}, {"diatas", "di atas"}, {"dibawah", "di bawah"},
+	{"Disini", "Di sini"}, {"Disana", "Di sana"}, {"Disitu", "Di situ"}, {"Didalam", "Di dalam"}, {"Diatas", "Di atas"}, {"Dibawah", "Di bawah"},
+}
 
 func main() {
 	out, err := exec.Command("git", "diff", "--name-only", "HEAD^").Output()
@@ -21,25 +24,23 @@ func main() {
 		panic(err)
 	}
 
-	data := string(out)
+	listFileName := string(out)
 
-	fmt.Print("diff file :\n", data)
-
-	for _, line := range strings.Split(data, "\n") {
-		if line != "" && line[len(line)-3:] == ".md" {
-			res := OpenFile(line)
-			newData := ReplaceToEYD(res)
-			WriteNewFile(newData, line)
+	for _, fileName := range strings.Split(listFileName, "\n") {
+		if fileName != "" && fileName[len(fileName)-3:] == ".md" {
+			MDText := OpenFile(fileName)
+			newMDText := ReplaceToEYD(MDText)
+			OverwriteText(newMDText, fileName)
 		}
 	}
 }
 
-func ReplaceToEYD(data string) string {
-	for i := 0; i < len(start); i++ {
-		data = strings.Replace(data, start[i], replace[i], -1)
+func ReplaceToEYD(textFile string) string {
+	for i := 0; i < len(listReplacerWord); i++ {
+		textFile = strings.Replace(textFile, listReplacerWord[i].Start, listReplacerWord[i].Replacer, -1)
 	}
 
-	return data
+	return textFile
 }
 
 func OpenFile(path string) string {
@@ -57,19 +58,24 @@ func OpenFile(path string) string {
 		panic(err)
 	}
 
-	data := string(b)
+	textFile := string(b)
 
-	return data
+	return textFile
 }
 
-func WriteNewFile(data string, path string) {
-	f, err := os.Create(path)
+func OverwriteText(textFile string, path string) {
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 	if err != nil {
-		log.Println("error write new word to file", err.Error())
+		log.Println("Error open file", err.Error())
 		panic(err)
 	}
 
 	defer f.Close()
 
-	f.WriteString(data)
+	_, err = f.WriteString(textFile)
+	if err != nil {
+		log.Println("Error write new text to file", err.Error())
+		panic(err)
+	}
+	return
 }
