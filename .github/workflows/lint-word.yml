@@ -10,11 +10,6 @@ jobs:
     name: lint-word
     runs-on: ubuntu-latest
     steps:
-      - name: debug head ref
-        run: 
-          echo "$GH_BRANCH"
-        env:
-          GH_BRANCH: ${{ github.head_ref || github.ref_name }} 
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
@@ -23,16 +18,17 @@ jobs:
         uses: actions/setup-go@v3
       - name: running lint wording
         run : go run ./tools/replace-to-EYD/main.go 
+      # - name: Commit and Push
+      #   uses: actions-js/push@master
+      #   with:
+      #     github_token: ${{ secrets.TOKEN_GITHUB }}
+      #     message : 'chore: lint wording'
+      #     branch: ${{ github.head_ref || github.ref_name }} 
       - name: Commit and Push
-        uses: actions-js/push@master
-        with:
-          github_token: ${{ secrets.TOKEN_GITHUB }}
-          message : 'chore: lint wording'
-          branch: ${{ github.head_ref || github.ref_name }} 
-        # continue-on-error: true
-        # run: |
-        #   git add .
-        #   git config user.name github-actions
-        #   git config user.email github-actions@github.com
-        #   git commit -am "chore: lint wording"
-        #   git push
+        continue-on-error: true
+        run: |
+          git add .
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -am "chore: lint words"
+          git push HEAD:${{ github.head_ref || github.ref_name }}
