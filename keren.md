@@ -2,18 +2,18 @@
 
 ## hello
 
-disana
-diatas
-didalam
-disini
-disitu
+di sana
+di atas
+di dalam
+di sini
+di situ
 
-disana diatas didalam disini disitu
+di sana di atas di dalam di sini di situ
 
-Disana
-Diatas
-Didalam
-Disini
-Disitu
+Di sana
+Di atas
+Di dalam
+Di sini
+Di situ
 
-Disana terdapat. Di sini terdapat. Disitu Terdapat. Diatas terdapat.
+Di sana terdapat. Di sini terdapat. Di situ Terdapat. Di atas terdapat.
