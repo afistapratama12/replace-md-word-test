@@ -7,3 +7,6 @@ disana
 disitu
 didalam
 diatas
+disini
+disana
+diatas
